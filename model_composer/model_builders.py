@@ -10,7 +10,8 @@ from keras.api.optimizers import Adam
 # ------------------ RNN Model ------------------
 def create_rnn_model(input_shape, output_units=1):
     model = Sequential([
-        SimpleRNN(64, input_shape=input_shape, return_sequences=True),
+        Input(shape=input_shape),
+        SimpleRNN(64, return_sequences=True),
         SimpleRNN(32),
         Dense(output_units)
     ])

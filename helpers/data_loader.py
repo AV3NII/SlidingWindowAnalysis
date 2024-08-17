@@ -1,6 +1,7 @@
 import numpy as np
 from helpers.prepocess_data import preprocess_df
 
+
 def split_time_series_data(df, target_column, val_size=0.15, test_size=0.15, window_size=1):
     """
     Split a time series DataFrame into training, validation, and test sets.

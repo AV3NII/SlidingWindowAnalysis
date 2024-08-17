@@ -12,6 +12,9 @@ def preprocess_df(df):
     # 'name' is a categorical feature, so we'll one-hot encode it
     df = pd.get_dummies(df, columns=['name'], drop_first=True)
 
+    # 'preciptype' is a categorical feature, so we'll one-hot encode it
+    df = pd.get_dummies(df, columns=['preciptype'], drop_first=True)
+
     # Convert 'datetime' column to datetime if it's not already
     if 'datetime' in df.columns and not pd.api.types.is_datetime64_any_dtype(df['datetime']):
         df['datetime'] = pd.to_datetime(df['datetime'])
