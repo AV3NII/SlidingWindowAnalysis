@@ -38,7 +38,7 @@ def train_and_evaluate_model(
 
     if is_deep_learning:
         early_stopping = EarlyStopping(monitor='val_loss', patience=10)
-        model_checkpoint = ModelCheckpoint(f"{model_name}_best_model.keras", save_best_only=True)
+        model_checkpoint = ModelCheckpoint(f"experiment_models/{model_name}_best_model.keras", save_best_only=True)
         history = model.fit(x_train, y_train, validation_data=(x_val, y_val),
                             epochs=epochs, batch_size=batch_size,
                             callbacks=[early_stopping, model_checkpoint])
