@@ -13,19 +13,17 @@ def log(metrics):
 
     # Define the output path
     output_dir = 'results'
-    output_path = os.path.join('..',output_dir, model_name, f"{window_size}-DayWindow-metrics.md")
+    output_path = os.path.join('..', output_dir, model_name, "metrics.csv")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    # Write the metrics to the markdown file
-    with open(output_path, 'w') as f:
-        f.write(f"# Model Performance Metrics\n\n")
-        f.write(f"**Model Name:** {model_name}\n\n")
-        f.write(f"**Window Size:** {window_size}\n\n")
-        f.write(f"**RMSE:** {metrics['rmse']:.4f}\n\n")
-        f.write(f"**MAE:** {metrics['mae']:.4f}\n\n")
-        f.write(f"**SMAPE:** {metrics['smape']:.4f}\n\n")
-        f.write(f"**R²:** {metrics['r2']:.4f}\n\n")
-        f.write(f"**Forecast Bias:** {metrics['forecast_bias']:.4f}\n\n")
-        f.write(f"**Training Time (seconds):** {metrics['training_time']:.4f}\n\n")
+    # Check if the file already exists
+    file_exists = os.path.isfile(output_path)
+
+    # Write the metrics to the file (append mode)
+    with open(output_path, 'a') as f:
+        # Write the header only if the file does not already exist
+        if not file_exists:
+            f.write(f"model_name,window_size,rmse,mae,smape,r2,forecast_bias,training_time\n")
+        f.write(f"{model_name},{window_size},{metrics['rmse']},{metrics['mae']},{metrics['smape']},{metrics['r2']},{metrics['forecast_bias']},{metrics['training_time']}\n")
 
     print(f"Metrics have been logged to: {output_path}")
