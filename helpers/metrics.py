@@ -7,6 +7,7 @@ from keras.api.callbacks import EarlyStopping, ModelCheckpoint
 
 def train_and_evaluate_model(
         model,
+        model_name,
         x_train, y_train,
         x_val, y_val,
         x_test, y_test,
@@ -20,6 +21,8 @@ def train_and_evaluate_model(
 
     Parameters:
     - model: The machine learning model to be trained
+    - model_name: Name of the model
+    - input_preprocessor: Function to preprocess input data
     - X_train, y_train: Training data
     - X_val, y_val: Validation data
     - X_test, y_test: Testing data
@@ -36,7 +39,7 @@ def train_and_evaluate_model(
 
     if is_deep_learning:
         early_stopping = EarlyStopping(monitor='val_loss', patience=10)
-        model_checkpoint = ModelCheckpoint(f"{model.name}_best_model.keras", save_best_only=True)
+        model_checkpoint = ModelCheckpoint(f"{model_name}_best_model.keras", save_best_only=True)
         history = model.fit(x_train, y_train, validation_data=(x_val, y_val),
                             epochs=epochs, batch_size=batch_size,
                             callbacks=[early_stopping, model_checkpoint])
@@ -62,7 +65,7 @@ def train_and_evaluate_model(
 
     # Compile metrics dictionary
     metrics = {
-        'model_name': model.__class__.__name__,
+        'model_name': model_name,
         'window_size': window_size,
         'rmse': rmse,
         'mae': mae,
