@@ -38,5 +38,4 @@ def prepare_for_model(
 
     model = model_func(input_shape)
 
-
     return model, x_train, y_train, x_val, y_val, x_test, y_test
