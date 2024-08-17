@@ -35,3 +35,5 @@ def preprocess_df(df):
 
         # Drop original 'sunrise' and 'sunset' columns
         df = df.drop(['sunrise', 'sunset'], axis=1)
+
+    return df
