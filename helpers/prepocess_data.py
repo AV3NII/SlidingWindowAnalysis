@@ -6,14 +6,26 @@ def preprocess_df(df):
     df = df.sort_index()
 
     # After some EDA we decided to drop these columns
-    cols_to_drop = ['stations', 'description', 'conditions', 'icon']
+    cols_to_drop = ['stations', 'description', 'conditions', 'icon', 'severerisk']
     df = df.drop(cols_to_drop, axis=1)
 
-    # 'name' is a categorical feature, so we'll one-hot encode it
-    df = pd.get_dummies(df, columns=['name'], drop_first=True)
+    # null values in 'sealevelpressure' column are filled with the mean value
+    df['sealevelpressure'] = df['sealevelpressure'].fillna(df['sealevelpressure'].mean())
+
+    # null values in 'visibility' column are filled with the mean value
+    df['visibility'] = df['visibility'].fillna(df['visibility'].mean())
+
+    # null values in 'windgust' column are filled with the 'windspeed' values
+    df['windgust'] = df['windgust'].fillna(df['windspeed'])
+
+    # null values in 'preciptype' column are filled with the 'none'
+    df['preciptype'] = df['preciptype'].fillna('none')
 
     # 'preciptype' is a categorical feature, so we'll one-hot encode it
     df = pd.get_dummies(df, columns=['preciptype'], drop_first=True)
+
+    # 'name' is a categorical feature, so we'll one-hot encode it
+    df = pd.get_dummies(df, columns=['name'], drop_first=True)
 
     # Convert 'datetime' column to datetime if it's not already
     if 'datetime' in df.columns and not pd.api.types.is_datetime64_any_dtype(df['datetime']):
