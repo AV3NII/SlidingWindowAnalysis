@@ -1,5 +1,5 @@
-import numpy as np
 from helpers.prepocess_data import preprocess_df
+import pandas as pd
 
 
 def split_time_series_data(df, target_column, val_size=0.15, test_size=0.15, window_size=1):
@@ -14,9 +14,9 @@ def split_time_series_data(df, target_column, val_size=0.15, test_size=0.15, win
     - window_size: int, size of the sliding window for feature creation (default 1)
 
     Returns:
-    - x_train, y_train: Training data and labels
-    - x_val, y_val: Validation data and labels
-    - x_test, y_test: Test data and labels
+    - x_train, y_train: Training data and labels as DataFrames
+    - x_val, y_val: Validation data and labels as DataFrames
+    - x_test, y_test: Test data and labels as DataFrames
     """
 
     # Preprocess the DataFrame
@@ -38,9 +38,9 @@ def split_time_series_data(df, target_column, val_size=0.15, test_size=0.15, win
         features = []
         labels = []
         for i in range(len(data) - window_size):
-            features.append(data.iloc[i:i + window_size].drop(columns=[target_column]).values.flatten())
+            features.append(data.iloc[i:i + window_size].drop(columns=[target_column]))
             labels.append(data.iloc[i + window_size][target_column])
-        return np.array(features), np.array(labels)
+        return pd.concat(features, keys=range(len(features))), pd.Series(labels, name=target_column)
 
     # Create features and labels for each set
     x_train, y_train = create_features(train_data)
