@@ -26,13 +26,13 @@ def split_time_series_data(df, target_column, val_size=0.15, test_size=0.15, win
     cols_to_drop = ['stations', 'description', 'conditions', 'icon']
     df = df.drop(cols_to_drop, axis=1)
 
-    # Convert 'date' column to datetime if it's not already
-    if 'date' in df.columns and not pd.api.types.is_datetime64_any_dtype(df['date']):
-        df['date'] = pd.to_datetime(df['date'])
+    # Convert 'datetime' column to datetime if it's not already
+    if 'datetime' in df.columns and not pd.api.types.is_datetime64_any_dtype(df['datetime']):
+        df['datetime'] = pd.to_datetime(df['datetime'])
 
-    # Set 'date' as index if it's not already
-    if 'date' in df.columns:
-        df = df.set_index('date')
+    # Set 'datetime' as index if it's not already
+    if 'datetime' in df.columns:
+        df = df.set_index('datetime')
 
     # Handle 'sunrise' and 'sunset' columns
     if 'sunrise' in df.columns and 'sunset' in df.columns:
