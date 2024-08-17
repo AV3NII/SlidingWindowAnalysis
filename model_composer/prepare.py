@@ -28,7 +28,7 @@ def prepare_for_model(
     feature_names = x_train.columns.tolist()
     model = None  # Placeholder override by the model_func
 
-    if 'lstm' in model_name:
+    if 'lstm' in model_name or 'cnn' in model_name:
         input_shape = (window_size, len(feature_names))
         print(f"Input shape for {model_name}: {input_shape}")
 
@@ -36,17 +36,6 @@ def prepare_for_model(
         x_train = x_train.values.reshape(-1, window_size, len(feature_names)).astype(np.float32)
         x_val = x_val.values.reshape(-1, window_size, len(feature_names)).astype(np.float32)
         x_test = x_test.values.reshape(-1, window_size, len(feature_names)).astype(np.float32)
-
-        model = model_func(input_shape)
-
-    elif 'cnn' in model_name:
-        input_shape = (window_size, len(feature_names), 1)
-        print(f"Input shape for {model_name}: {input_shape}")
-
-        # Convert DataFrames to numpy arrays and reshape for CNN models
-        x_train = x_train.values.reshape(-1, window_size, len(feature_names), 1).astype(np.float32)
-        x_val = x_val.values.reshape(-1, window_size, len(feature_names), 1).astype(np.float32)
-        x_test = x_test.values.reshape(-1, window_size, len(feature_names), 1).astype(np.float32)
 
         model = model_func(input_shape)
 
