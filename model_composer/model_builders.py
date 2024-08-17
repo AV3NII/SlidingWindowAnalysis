@@ -101,6 +101,7 @@ def create_tcn_model(input_shape, output_units=1, nb_filters=64, kernel_size=2,
                                kernel_size, dropout_rate)
 
     x = Activation('relu')(x)
+    x = GlobalAveragePooling1D()(x)
     x = Dense(output_units)(x)
 
     model = Model(inputs=[input_layer], outputs=[x])
