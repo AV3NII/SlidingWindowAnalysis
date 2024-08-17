@@ -2,7 +2,7 @@ import keras.api.backend as kb
 import lightgbm as lgb
 import xgboost as xgb
 from keras.api.layers import SimpleRNN, LSTM, Dense, Conv1D, MaxPooling1D, Flatten, Activation, SpatialDropout1D, \
-    LayerNormalization, Add, Input
+    LayerNormalization, Add, Input, GlobalAveragePooling1D
 from keras.api.models import Sequential, Model
 from keras.api.optimizers import Adam
 
@@ -33,11 +33,10 @@ def create_lstm_model(input_shape, output_units=1):
 # ------------------ CNN Model ------------------
 def create_cnn_model(input_shape, output_units=1):
     model = Sequential([
-        Conv1D(filters=64, kernel_size=3, activation='relu', input_shape=input_shape),
-        MaxPooling1D(pool_size=2),
-        Conv1D(filters=32, kernel_size=3, activation='relu'),
-        MaxPooling1D(pool_size=2),
-        Flatten(),
+        Conv1D(filters=64, kernel_size=2, activation='relu', input_shape=input_shape, padding='same'),
+        MaxPooling1D(pool_size=2, padding='same'),
+        Conv1D(filters=32, kernel_size=2, activation='relu', padding='same'),
+        GlobalAveragePooling1D(),
         Dense(32, activation='relu'),
         Dense(output_units)
     ])
