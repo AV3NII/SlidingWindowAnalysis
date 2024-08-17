@@ -28,7 +28,7 @@ def prepare_for_model(
     feature_names = x_train.columns.tolist()
     model = None  # Placeholder override by the model_func
 
-    if model_name.contains('lstm'):
+    if 'lstm' in model_name:
         input_shape = (window_size, len(feature_names))
         print(f"Input shape for {model_name}: {input_shape}")
 
