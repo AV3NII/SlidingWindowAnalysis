@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
 from keras.api.callbacks import EarlyStopping, ModelCheckpoint
-
+from helpers.logger import log
 
 def train_and_evaluate_model(
         model,
@@ -43,10 +43,13 @@ def train_and_evaluate_model(
                             epochs=epochs, batch_size=batch_size,
                             callbacks=[early_stopping, model_checkpoint])
     elif hyperparams is not None:
+
+
         tscv = TimeSeriesSplit(n_splits=5)
         grid_search = GridSearchCV(model, hyperparams, cv=tscv, scoring='neg_mean_squared_error')
         grid_search.fit(x_train, y_train)
         model = grid_search.best_estimator_
+
     else:
         model.fit(x_train, y_train)
 
@@ -73,5 +76,5 @@ def train_and_evaluate_model(
         'forecast_bias': forecast_bias,
         'training_time': training_time
     }
-
+    log(metrics)
     return model, metrics
