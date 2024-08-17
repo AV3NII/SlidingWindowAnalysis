@@ -58,6 +58,10 @@ def train_and_evaluate_model(
     # Make predictions
     y_pred = model.predict(x_test)
 
+    # Ensure y_pred is 1D
+    y_pred = y_pred.flatten()
+    y_test = y_test.flatten()
+
     # Calculate metrics
     rmse = np.sqrt(mean_squared_error(y_test, y_pred))
     mae = mean_absolute_error(y_test, y_pred)
