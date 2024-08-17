@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 def split_time_series_data(df, target_column, val_size=0.15, test_size=0.15, window_size=1):
@@ -20,6 +21,34 @@ def split_time_series_data(df, target_column, val_size=0.15, test_size=0.15, win
 
     # Ensure the DataFrame is sorted by date
     df = df.sort_index()
+
+    # After some EDA we decided to drop these columns
+    cols_to_drop = ['stations', 'description', 'conditions', 'icon']
+    df = df.drop(cols_to_drop, axis=1)
+
+    # Convert 'date' column to datetime if it's not already
+    if 'date' in df.columns and not pd.api.types.is_datetime64_any_dtype(df['date']):
+        df['date'] = pd.to_datetime(df['date'])
+
+    # Set 'date' as index if it's not already
+    if 'date' in df.columns:
+        df = df.set_index('date')
+
+    # Handle 'sunrise' and 'sunset' columns
+    if 'sunrise' in df.columns and 'sunset' in df.columns:
+        # Convert to datetime
+        df['sunrise'] = pd.to_datetime(df['sunrise'])
+        df['sunset'] = pd.to_datetime(df['sunset'])
+
+        # Extract time features
+        df['sunrise_hour'] = df['sunrise'].dt.hour + df['sunrise'].dt.minute / 60
+        df['sunset_hour'] = df['sunset'].dt.hour + df['sunset'].dt.minute / 60
+
+        # Calculate day length in hours
+        df['day_length'] = (df['sunset'] - df['sunrise']).dt.total_seconds() / 3600
+
+        # Drop original 'sunrise' and 'sunset' columns
+        df = df.drop(['sunrise', 'sunset'], axis=1)
 
     # Calculate sizes
     train_size = 1 - val_size - test_size
