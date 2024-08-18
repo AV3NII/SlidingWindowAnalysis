@@ -24,6 +24,11 @@ def prepare_for_model(
     - x_val, y_val: Validation data and labels
     - x_test, y_test: Testing data and labels
     """
+    if model_name == 'rnn':
+        # build the model and rturn the data as ism since they were already processed in prepare_for_rnn
+        model = model_func((window_size, x_train.shape[2]))
+        print("Data and model prepared for RNN")
+        return model, x_train, y_train, x_val, y_val, x_test, y_test
 
     feature_names = x_train.columns.tolist()
     model = None  # Placeholder override by the model_func
@@ -37,5 +42,5 @@ def prepare_for_model(
     x_test = x_test.values.reshape(-1, window_size, len(feature_names)).astype(np.float32)
 
     model = model_func(input_shape)
-
+    print(f"Data prepared for {model_name} model")
     return model, x_train, y_train, x_val, y_val, x_test, y_test
