@@ -12,7 +12,8 @@ def create_rnn_model(input_shape, output_units=1):
     model = Sequential([
         Input(shape=input_shape),
         SimpleRNN(64, return_sequences=True),
-        SimpleRNN(32),
+        SimpleRNN(32, return_sequences=True),
+        SimpleRNN(16),
         Dense(output_units)
     ])
     model.compile(optimizer=Adam(learning_rate=0.001), loss='mse')
