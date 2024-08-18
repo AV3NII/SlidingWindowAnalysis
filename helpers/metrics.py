@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.model_selection import TimeSeriesSplit, GridSearchCV
 from keras.api.callbacks import EarlyStopping, ModelCheckpoint
-from helpers.logger import log
+
 
 def train_and_evaluate_model(
         model,
@@ -80,5 +80,4 @@ def train_and_evaluate_model(
         'forecast_bias': forecast_bias,
         'training_time': training_time
     }
-    log(metrics)
     return model, metrics

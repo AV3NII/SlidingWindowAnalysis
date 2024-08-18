@@ -24,10 +24,10 @@ def prepare_for_model(
     - x_val, y_val: Validation data and labels
     - x_test, y_test: Testing data and labels
     """
-    if model_name == 'rnn':
+    if model_name in ['rnn', 'gbm']:
         # build the model and rturn the data as ism since they were already processed in prepare_for_rnn
         model = model_func((window_size, x_train.shape[2]))
-        print("Data and model prepared for RNN")
+        print(f"Data and model prepared for {model_name}")
         return model, x_train, y_train, x_val, y_val, x_test, y_test
 
     feature_names = x_train.columns.tolist()

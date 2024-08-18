@@ -1,6 +1,6 @@
 import os
 
-def log(metrics):
+def log(metrics, exp_setup):
     """
     Log the evaluation metrics to a file.
 
@@ -13,7 +13,7 @@ def log(metrics):
 
     # Define the output path
     output_dir = 'results'
-    output_path = os.path.join('..', output_dir, model_name, "metrics.csv")
+    output_path = os.path.join('..', output_dir, exp_setup, model_name, "metrics.csv")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     # Check if the file already exists
